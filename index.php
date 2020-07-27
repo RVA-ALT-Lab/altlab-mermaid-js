@@ -54,11 +54,14 @@ add_action('wp_enqueue_scripts', 'mermaid_load_scripts');
 }
 
 
-//takes submitter to the post create on submissions that create posts
+//takes submitter to the post create on submissions that create posts if set to redirect (regardless of destination)
 add_action('gform_after_submission', 'alt_gform_redirect_on_post', 10, 2);
 function alt_gform_redirect_on_post($entry, $form) {
-    $post_id = $entry['post_id'];
-    $url = get_site_url() . "/?p=" . $post_id;
-    wp_redirect($url);
-    exit;
+    if($form["confirmation"]["type"] === 'redirect'){
+        $post_id = $entry['post_id'];
+        $url = get_site_url() . "/?p=" . $post_id;
+        wp_redirect($url);
+        exit;
+    }
+    
 }
